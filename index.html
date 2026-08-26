@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tony the Barber | Demo</title>
+  <meta name="description" content="Tony the Barber — premium fictional barber website built for testing." />
+  <meta name="robots" content="noindex,nofollow" />
+  <style>
+    :root {
+      --bg:#0b0b0c;
+      --bg-2:#111113;
+      --panel:#151518;
+      --panel-2:#1b1c20;
+      --line:rgba(255,255,255,.08);
+      --text:#f2ece3;
+      --muted:#beb5aa;
+      --gold:#d1a35a;
+      --gold-2:#b7833e;
+      --shadow:0 24px 70px rgba(0,0,0,.36);
+      --radius:26px;
+      --radius-sm:18px;
+      --maxw:1180px;
+    }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body {
+      margin:0;
+      background:
+        radial-gradient(circle at top right, rgba(209,163,90,.10), transparent 25%),
+        linear-gradient(180deg, #0a0a0b, #0d0d0f 30%, #0f1012);
+      color:var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+      line-height:1.5;
+    }
+    a { color:inherit; text-decoration:none; }
+    img { display:block; width:100%; }
+    .wrap { width:min(var(--maxw), calc(100% - 32px)); margin:0 auto; }
+    .eyebrow {
+      display:inline-flex; align-items:center; gap:10px;
+      color:var(--gold); font-size:.76rem; font-weight:800;
+      letter-spacing:.17em; text-transform:uppercase;
+    }
+    .eyebrow::before {
+      content:""; width:28px; height:1px; background:var(--gold);
+    }
+    h1,h2,h3,.brand-strong {
+      font-family: Impact, "Arial Narrow", Arial, sans-serif;
+      text-transform:uppercase;
+      line-height:.95;
+      margin:0;
+      letter-spacing:.02em;
+    }
+    h1 { font-size:clamp(3.4rem, 8vw, 7rem); }
+    h2 { font-size:clamp(2.3rem, 5vw, 4.6rem); }
+    h3 { font-size:1.35rem; }
+    p { margin:0; color:var(--muted); }
+    .btn {
+      display:inline-flex; align-items:center; justify-content:center; gap:10px;
+      min-height:52px; padding:0 22px; border-radius:999px; font-weight:800;
+      transition:.22s ease; cursor:pointer;
+    }
+    .btn-primary {
+      background:linear-gradient(180deg, #deb273, var(--gold));
+      color:#1a1208;
+      box-shadow:0 10px 30px rgba(209,163,90,.25);
+    }
+    .btn-primary:hover { transform:translateY(-2px); }
+    .btn-ghost {
+      border:1px solid rgba(255,255,255,.15);
+      background:rgba(255,255,255,.03);
+      color:var(--text);
+    }
+    .btn-ghost:hover {
+      border-color:rgba(255,255,255,.28);
+      background:rgba(255,255,255,.05);
+    }
+    .section { padding:96px 0; }
+    .card {
+      background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.015));
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+    }
+
+    /* nav */
+    .topbar {
+      position:sticky; top:0; z-index:60;
+      backdrop-filter: blur(10px);
+      background:linear-gradient(180deg, rgba(11,11,12,.95), rgba(11,11,12,.85));
+      border-bottom:1px solid rgba(255,255,255,.05);
+    }
+    .topbar-inner {
+      min-height:74px; display:flex; align-items:center; justify-content:space-between; gap:18px;
+    }
+    .brand {
+      display:flex; align-items:center; gap:12px;
+    }
+    .brand-mark {
+      width:42px; height:42px; border-radius:50%;
+      display:grid; place-items:center;
+      color:var(--gold);
+      border:1px solid rgba(209,163,90,.55);
+      font-weight:900;
+      font-family: Impact, "Arial Narrow", Arial, sans-serif;
+      letter-spacing:.04em;
+    }
+    .brand-strong { font-size:1rem; }
+    .brand small {
+      display:block; color:#978e83; font-size:.72rem; letter-spacing:.14em; text-transform:uppercase;
+      margin-top:2px;
+    }
+    .nav-links {
+      display:flex; align-items:center; gap:24px;
+      color:#d8d1c7; font-size:.94rem; font-weight:700;
+    }
+    .nav-links a:hover { color:var(--gold); }
+
+    /* hero */
+    .hero {
+      position:relative;
+      min-height:84vh;
+      display:grid;
+      align-items:end;
+      overflow:hidden;
+      border-bottom:1px solid rgba(255,255,255,.04);
+    }
+    .hero-bg {
+      position:absolute; inset:0;
+      background:
+        linear-gradient(90deg, rgba(9,9,10,.88) 0%, rgba(9,9,10,.68) 36%, rgba(9,9,10,.25) 60%, rgba(9,9,10,.76) 100%),
+        linear-gradient(180deg, rgba(5,5,6,.10), rgba(5,5,6,.40)),
+        url("assets/images/tony-hero.jpg") center/cover no-repeat;
+      transform:scale(1.02);
+    }
+    .hero-overlay {
+      position:absolute; inset:auto 0 0 0; height:140px;
+      background:linear-gradient(180deg, transparent, rgba(11,11,12,.96));
+    }
+    .hero-content {
+      position:relative; z-index:2;
+      padding:72px 0 54px;
+    }
+    .hero-grid {
+      display:grid; grid-template-columns: minmax(0,1.05fr) 320px; gap:38px; align-items:end;
+    }
+    .hero-copy {
+      max-width:760px;
+    }
+    .hero h1 span { color:var(--gold); }
+    .hero-lead {
+      margin-top:22px;
+      max-width:620px;
+      font-size:1.08rem;
+      color:#ddd6cc;
+    }
+    .hero-actions {
+      display:flex; flex-wrap:wrap; gap:12px; margin-top:28px;
+    }
+    .hero-note {
+      padding:20px;
+      border-radius:22px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(13,13,15,.55);
+    }
+    .hero-note strong {
+      display:block; color:var(--gold); font-size:.78rem; letter-spacing:.16em; text-transform:uppercase; margin-bottom:10px;
+    }
+    .hero-note p { color:#d4ccc0; font-size:.96rem; }
+
+    /* section heads */
+    .section-head {
+      display:grid; grid-template-columns:1fr .9fr; gap:38px; align-items:end; margin-bottom:34px;
+    }
+    .section-head p { max-width:560px; font-size:1rem; }
+
+    /* services */
+    .services-grid {
+      display:grid; grid-template-columns:repeat(3, 1fr); gap:16px;
+    }
+    .service {
+      padding:28px;
+      min-height:235px;
+      display:flex; flex-direction:column; justify-content:space-between;
+    }
+    .service .num {
+      color:#726b61; font-size:.82rem; font-weight:800; letter-spacing:.16em;
+    }
+    .service p { margin-top:12px; }
+    .price {
+      margin-top:16px;
+      color:var(--gold); font-size:2rem; font-family: Impact, "Arial Narrow", Arial, sans-serif;
+    }
+    .service-foot {
+      margin-top:22px; padding-top:18px;
+      border-top:1px solid var(--line);
+      color:#d7cfc2; font-weight:700; font-size:.88rem;
+    }
+
+    /* story/about */
+    .story-grid {
+      display:grid; grid-template-columns:1fr 1fr; gap:22px;
+    }
+    .portrait-card, .about-card {
+      overflow:hidden;
+    }
+    .portrait-card img {
+      aspect-ratio:4/5; object-fit:cover;
+    }
+    .about-card {
+      padding:34px;
+      display:flex; flex-direction:column; justify-content:center;
+    }
+    .about-card p { font-size:1.02rem; margin-top:18px; }
+    .stats {
+      display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:28px;
+    }
+    .stat {
+      padding:18px 0 0; border-top:1px solid var(--line);
+    }
+    .stat strong {
+      display:block; color:var(--text);
+      font-size:1.8rem; font-family: Impact, "Arial Narrow", Arial, sans-serif;
+    }
+    .stat span { color:#9e9488; font-size:.8rem; }
+
+    /* gallery */
+    .gallery-grid {
+      display:grid; grid-template-columns:1.1fr .9fr; gap:22px;
+    }
+    .photo-card {
+      overflow:hidden;
+    }
+    .photo-card img {
+      width:100%; height:100%; object-fit:cover; display:block;
+    }
+    .photo-card.large img { aspect-ratio: 4 / 3; }
+    .photo-card.small img { aspect-ratio: 4 / 3; }
+
+    /* reviews */
+    .reviews-grid {
+      display:grid; grid-template-columns:1.1fr 1fr 1fr; gap:16px;
+    }
+    .review {
+      padding:26px;
+    }
+    .review.featured {
+      background:linear-gradient(180deg, #f1e7d8, #e5d4bc);
+      color:#18120d;
+      border-color:rgba(209,163,90,.12);
+    }
+    .review.featured p, .review.featured span { color:#5c5247; }
+    .review .stars {
+      letter-spacing:.18em; color:var(--gold); margin-bottom:16px; font-size:1rem;
+    }
+    .review strong { display:block; margin-top:18px; }
+    .review span { font-size:.84rem; color:#91877b; }
+
+    /* booking */
+    .booking {
+      overflow:hidden;
+    }
+    .booking-grid {
+      display:grid; grid-template-columns:1fr .95fr; gap:0;
+      align-items:stretch;
+    }
+    .booking-copy {
+      padding:40px;
+      display:flex; flex-direction:column; justify-content:center;
+    }
+    .booking-copy p { margin:18px 0 28px; max-width:560px; }
+    .booking-image img {
+      width:100%; height:100%; object-fit:cover; aspect-ratio: 4 / 3;
+    }
+
+    /* contact */
+    .contact-grid {
+      display:grid; grid-template-columns:1fr 1fr; gap:22px;
+    }
+    .contact-card, .hours-card {
+      padding:30px;
+    }
+    .info-list {
+      margin-top:24px; display:grid; gap:18px;
+    }
+    .info-row {
+      display:grid; grid-template-columns:108px 1fr; gap:16px;
+      padding-bottom:14px;
+      border-bottom:1px solid var(--line);
+    }
+    .info-row:last-child { border-bottom:0; }
+    .info-row span {
+      color:#8f877c; font-size:.8rem; text-transform:uppercase; letter-spacing:.12em;
+    }
+    .info-row strong { color:#e8dfd3; font-size:.98rem; }
+    .hours-row {
+      display:flex; justify-content:space-between; gap:14px;
+      padding:14px 0; border-bottom:1px solid var(--line);
+    }
+    .hours-row:last-child { border-bottom:0; }
+    .hours-row span { color:#b6aca1; }
+    .hours-row strong { color:#ece4d8; }
+    .closed { color:#91877b; }
+
+    footer {
+      padding:26px 0 95px;
+      color:#8e8579;
+      font-size:.82rem;
+    }
+    .footer-inner {
+      display:flex; justify-content:space-between; gap:12px; align-items:center;
+      border-top:1px solid rgba(255,255,255,.06);
+      padding-top:20px;
+    }
+
+    /* mobile bottom nav */
+    .mobile-bottom-nav {
+      position:fixed; left:12px; right:12px; bottom:10px; z-index:80;
+      display:none;
+      grid-template-columns:repeat(4,1fr);
+      gap:6px;
+      padding:6px;
+      border-radius:20px;
+      border:1px solid rgba(255,255,255,.09);
+      background:rgba(16,16,18,.96);
+      box-shadow:0 18px 50px rgba(0,0,0,.46);
+      backdrop-filter: blur(10px);
+    }
+    .mobile-bottom-nav a {
+      min-width:0; height:54px; border-radius:14px;
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      gap:2px; color:#d6cfc5;
+    }
+    .mobile-bottom-nav a span {
+      font-size:1rem; font-weight:900; line-height:1;
+    }
+    .mobile-bottom-nav a small {
+      font-size:.66rem; font-weight:800;
+    }
+    .mobile-bottom-nav a.cta {
+      background:linear-gradient(180deg, #deb273, var(--gold));
+      color:#18120d;
+    }
+
+
+    @media (max-width: 980px) {
+      .nav-links { display:none; }
+      .hero-grid, .section-head, .story-grid, .gallery-grid, .booking-grid, .contact-grid {
+        grid-template-columns:1fr;
+      }
+      .services-grid, .reviews-grid {
+        grid-template-columns:1fr 1fr;
+      }
+      .review.featured { grid-column:1 / -1; }
+      .booking-image img { aspect-ratio: 16 / 10; }
+    }
+    @media (max-width: 720px) {
+      body { padding-bottom:86px; }
+      .wrap { width:min(var(--maxw), calc(100% - 24px)); }
+      .hero { min-height:auto; }
+      .hero-content { padding:60px 0 42px; }
+      .hero-grid { gap:18px; }
+      .hero-note { padding:18px; }
+      .section { padding:76px 0; }
+      .services-grid, .reviews-grid, .stats {
+        grid-template-columns:1fr;
+      }
+      .review.featured { grid-column:auto; }
+      .about-card, .booking-copy, .contact-card, .hours-card { padding:24px; }
+      .info-row { grid-template-columns:88px 1fr; }
+      .mobile-bottom-nav { display:grid; }
+      footer { padding-bottom:95px; }
+      .footer-inner { flex-direction:column; align-items:flex-start; }
+    }
+  </style>
+</head>
+<body>
+  
+
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <a href="#top" class="brand">
+        <div class="brand-mark">TB</div>
+        <div>
+          <div class="brand-strong">Tony the Barber</div>
+          <small>Beirut • fictional test brand</small>
+        </div>
+      </a>
+      <nav class="nav-links">
+        <a href="#services">Services</a>
+        <a href="#about">About</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#reviews">Reviews</a>
+        <a href="#contact">Visit</a>
+      </nav>
+      <a href="#book" class="btn btn-primary">Book now ↗</a>
+    </div>
+  </header>
+
+  <section id="top" class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="wrap hero-content">
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <div class="eyebrow">Precision • Character • Confidence</div>
+          <h1>Modern cuts.<br><span>Classic standards.</span></h1>
+          <p class="hero-lead">
+            Tony the Barber delivers sharp fades, clean beard work and a calm, premium barbershop experience.
+            This is a fictional test website built to simulate a high-end local barber brand.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#book">Book your chair ↗</a>
+            <a class="btn btn-ghost" href="#services">See services</a>
+          </div>
+        </div>
+        <div class="hero-note">
+          <strong>Why this version matters</strong>
+          <p>V2 uses custom AI images, stronger layout hierarchy, cleaner mobile behavior and a more believable premium barbershop feel.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="services" class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Services</div>
+          <h2>Keep it sharp.</h2>
+        </div>
+        <p>Simple menu, strong execution. Prices are fictional for testing, but the structure is realistic for a local barber site.</p>
+      </div>
+
+      <div class="services-grid">
+        <article class="card service">
+          <div>
+            <div class="num">01</div>
+            <h3>Signature Cut</h3>
+            <p>Consultation, tailored haircut, wash and styling — shaped to your hair type and daily routine.</p>
+            <div class="price">$20</div>
+          </div>
+          <div class="service-foot">40–45 min</div>
+        </article>
+
+        <article class="card service">
+          <div>
+            <div class="num">02</div>
+            <h3>Skin Fade</h3>
+            <p>Detailed fade work, clean outline and controlled finish for clients who want a sharper, tighter result.</p>
+            <div class="price">$25</div>
+          </div>
+          <div class="service-foot">45–55 min</div>
+        </article>
+
+        <article class="card service">
+          <div>
+            <div class="num">03</div>
+            <h3>Beard Sculpt</h3>
+            <p>Beard shaping, line-up and detailing with hot towel finish to clean up the full profile.</p>
+            <div class="price">$12</div>
+          </div>
+          <div class="service-foot">20–25 min</div>
+        </article>
+
+        <article class="card service">
+          <div>
+            <div class="num">04</div>
+            <h3>Cut + Beard</h3>
+            <p>The complete refresh: haircut, beard shaping, finishing work and styling in one session.</p>
+            <div class="price">$30</div>
+          </div>
+          <div class="service-foot">60 min</div>
+        </article>
+
+        <article class="card service">
+          <div>
+            <div class="num">05</div>
+            <h3>Kids Cut</h3>
+            <p>Clean, simple cuts with a patient approach for younger clients who need a calmer chair experience.</p>
+            <div class="price">$15</div>
+          </div>
+          <div class="service-foot">30 min</div>
+        </article>
+
+        <article class="card service">
+          <div>
+            <div class="num">06</div>
+            <h3>Quick Clean-Up</h3>
+            <p>Neck, sides and edge maintenance between major appointments when you just need a refresh.</p>
+            <div class="price">$8</div>
+          </div>
+          <div class="service-foot">15 min</div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="about" class="section" style="padding-top:0;">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Meet Tony</div>
+          <h2>One chair.<br>Full attention.</h2>
+        </div>
+        <p>A good barber remembers what worked last time, what you hated, and what suits your face shape. Tony’s fictional brand is built around that idea.</p>
+      </div>
+
+      <div class="story-grid">
+        <div class="card portrait-card">
+          <img src="assets/images/tony-action.jpg" alt="Tony the Barber portrait" loading="lazy" decoding="async" />
+        </div>
+        <div class="card about-card">
+          <p>Tony combines old-school care with a modern finish. The mood is relaxed, the standards stay high, and the result is meant to feel personal rather than rushed.</p>
+          <p>For a real local-business website, this section would be one of the most important trust-builders because clients often book the barber as much as the haircut.</p>
+
+          <div class="stats">
+            <div class="stat">
+              <strong>12+</strong>
+              <span>Years behind the chair</span>
+            </div>
+            <div class="stat">
+              <strong>4.9</strong>
+              <span>Fictional sample rating</span>
+            </div>
+            <div class="stat">
+              <strong>1 chair</strong>
+              <span>Personal service focus</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="gallery" class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Inside the shop</div>
+          <h2>The work. The details.</h2>
+        </div>
+        <p>Custom visuals make the site feel much more like a real brand. That matters if we want to sell the whole package, not just a layout.</p>
+      </div>
+
+      <div class="gallery-grid">
+        <div class="card photo-card large">
+          <img src="assets/images/tony-portrait.jpg" alt="Tony cutting a customer's hair" loading="lazy" decoding="async" />
+        </div>
+        <div class="card photo-card small">
+          <img src="assets/images/barber-tools.jpg" alt="Barber tools and products" loading="lazy" decoding="async" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="reviews" class="section" style="padding-top:0;">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Reviews</div>
+          <h2>Regulars for a reason.</h2>
+        </div>
+        <p>These are fictional sample testimonials. On a real client website, I’d replace these with verified Google or WhatsApp review content.</p>
+      </div>
+
+      <div class="reviews-grid">
+        <article class="card review featured">
+          <div class="stars">★★★★★</div>
+          <p>“Tony actually listens before he starts cutting. The fade is always clean and I never feel rushed out of the chair.”</p>
+          <strong>Karim M.</strong>
+          <span>Sample review • regular client</span>
+        </article>
+
+        <article class="card review">
+          <div class="stars">★★★★★</div>
+          <p>“The place looks premium, the service is consistent and booking is easy. Exactly what a neighborhood barber should be.”</p>
+          <strong>Rami H.</strong>
+          <span>Sample review</span>
+        </article>
+
+        <article class="card review">
+          <div class="stars">★★★★★</div>
+          <p>“Best beard line-up I’ve had in months. Clean, sharp and not overdone.”</p>
+          <strong>Jad A.</strong>
+          <span>Sample review</span>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="book" class="section">
+    <div class="wrap">
+      <div class="card booking">
+        <div class="booking-grid">
+          <div class="booking-copy">
+            <div class="eyebrow">Book your appointment</div>
+            <h2>Leave sharper this week.</h2>
+            <p>The button below opens WhatsApp with a sample booking message. For a real customer, we could connect this to WhatsApp, Fresha, Booksy, Calendly, or a custom booking flow.</p>
+            <div>
+              <a class="btn btn-primary" href="https://wa.me/96170000000?text=Hi%20Tony%2C%20I%27d%20like%20to%20book%20an%20appointment." target="_blank" rel="noopener">Book on WhatsApp ↗</a>
+            </div>
+          </div>
+          <div class="booking-image">
+            <img src="assets/images/tony-hero.jpg" alt="Tony standing inside his barbershop" loading="lazy" decoding="async" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="section" style="padding-top:0;">
+    <div class="wrap">
+      <div class="contact-grid">
+        <div class="card contact-card">
+          <div class="eyebrow">Visit the shop</div>
+          <h2>Come by.<br>Leave better.</h2>
+          <div class="info-list">
+            <div class="info-row"><span>Address</span><strong>Mar Mikhael, Beirut — fictional test location</strong></div>
+            <div class="info-row"><span>Phone</span><strong>+961 70 000 000</strong></div>
+            <div class="info-row"><span>Instagram</span><strong>@tonythebarber.test</strong></div>
+            <div class="info-row"><span>Parking</span><strong>Street parking nearby</strong></div>
+          </div>
+        </div>
+
+        <div class="card hours-card">
+          <div class="eyebrow">Opening hours</div>
+          <div style="height:14px"></div>
+          <div class="hours-row"><span>Monday</span><strong>10:00 – 20:00</strong></div>
+          <div class="hours-row"><span>Tuesday</span><strong>10:00 – 20:00</strong></div>
+          <div class="hours-row"><span>Wednesday</span><strong>10:00 – 20:00</strong></div>
+          <div class="hours-row"><span>Thursday</span><strong>10:00 – 20:00</strong></div>
+          <div class="hours-row"><span>Friday</span><strong>10:00 – 21:00</strong></div>
+          <div class="hours-row"><span>Saturday</span><strong>09:00 – 21:00</strong></div>
+          <div class="hours-row"><span>Sunday</span><strong class="closed">Closed</strong></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap footer-inner">
+      <div>© 2026 Tony the Barber. Fictional website built for testing.</div>
+      <div>Tony V2 • AI Web Agency test project</div>
+    </div>
+  </footer>
+
+  <nav class="mobile-bottom-nav" aria-label="Mobile navigation">
+    <a href="#services"><span>✂</span><small>Services</small></a>
+    <a href="#about"><span>TB</span><small>Tony</small></a>
+    <a href="#gallery"><span>★</span><small>Gallery</small></a>
+    <a href="#book" class="cta"><span>↗</span><small>Book</small></a>
+  </nav>
+</body>
+</html>
