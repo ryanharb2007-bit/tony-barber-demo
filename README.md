@@ -18,3 +18,4 @@ This site has no build step.
 ## Important
 All business details are fictional test data.
 The demo is configured with noindex,nofollow and robots.txt blocking indexing.
+## Enable analytics deployment
